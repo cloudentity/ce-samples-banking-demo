@@ -41,8 +41,8 @@ const http = (request, origin, baseUrl) => ({
     .then(toJson)
 });
 
-export default http(superagent, window.location.origin, `/api`);
+export default http(superagent, window.location.origin, '/api');
 
-export const base = http(superagent, window.location.origin, `/api`);
+export const base = http(superagent, window.location.origin, '/api');
 
 export const baseWithCustomBaseUrl = (baseUrl, origin = window.location.origin) => http(superagent, origin, baseUrl);
