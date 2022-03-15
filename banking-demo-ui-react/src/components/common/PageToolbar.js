@@ -10,8 +10,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-// import financrooLogo from '../../assets/financroo-logo.svg';
-// import { logout } from '../AuthPage';
+// Uncomment and change the line below to point to your own logo image
+// import logoImage from '../../assets/logo-example.svg';
 
 export const subHeaderHeight = 116;
 
@@ -58,6 +58,10 @@ const useStyles = (withSubheader: boolean, mode: string) =>
         backgroundColor: theme.palette.primary.main,
       },
     },
+    textLogo: {
+      marginLeft: 10,
+      color: theme.palette.primary.main
+    }
   }));
 
 export default function PageToolbar({
@@ -80,8 +84,10 @@ export default function PageToolbar({
       className={classes.appBar}
     >
       <Toolbar className={classes.toolBar}>
-        {/* <img alt="financroo logo" src={financrooLogo} /> */}
-        <div style={{marginLeft: 10, color: '#36C6AF'}}>
+        {/* <img alt="logo image" src={logoImage} /> */}
+        {/* To use your own logo, uncomment the line above (after editing the 'logoImage' import declaration to point to your own image)... */}
+        {/* ...and remove the div block directly below */}
+        <div className={classes.textLogo}>
           <Typography variant="h5" component="h1">1st Demo Bank</Typography>
         </div>
         <div style={{ flex: 1 }} />

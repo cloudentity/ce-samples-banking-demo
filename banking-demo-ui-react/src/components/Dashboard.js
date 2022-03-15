@@ -6,7 +6,7 @@ import Transactions from './Transactions';
 import { useQuery } from 'react-query';
 import { api } from '../api/api';
 import Progress from './Progress';
-import {applyFiltering} from './analytics.utils';
+// import {applyFiltering} from './analytics.utils';
 // import {path, pick} from 'ramda';
 
 const useStyles = makeStyles((theme) => ({

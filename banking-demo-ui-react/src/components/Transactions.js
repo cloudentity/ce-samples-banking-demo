@@ -1,4 +1,3 @@
-import { Card } from '@material-ui/core';
 import TransactionsTable, {mapTransactionToData} from './TransactionsTable';
 // import AnalyticsTable, {mapTransactionToData} from './AnalyticsTable';
 // import AnalyticsBarChart from './AnalyticsBarChart';

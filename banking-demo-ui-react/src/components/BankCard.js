@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button, Theme} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,12 +8,27 @@ import Checkbox from '@material-ui/core/Checkbox';
 // import {banks} from './banks';
 import {filter, pathOr} from 'ramda';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme) => ({
   accountRoot: {
     borderBottom: '1px solid #ECECEC',
     '&:hover': {
       cursor: 'pointer'
     }
+  },
+  accountCardBackgroundActive: {
+    background: theme.palette.primary.main
+  },
+  accountCardBackgroundInactive: {
+    background: 'initial'
+  },
+  accountCardColorActive: {
+    color: '#fff'
+  },
+  accountCardColorInactive: {
+    color: 'initial'
+  },
+  actionsBarColor: {
+    color: theme.palette.primary.main
   }
 }));
 
@@ -49,11 +63,13 @@ export default function BankCard({bankId, reconnect, accounts, balances, filteri
               months: [],
               categories: []
             })}
-          className={classes.accountRoot}
+          className={
+            isAccountChecked(account.AccountId)
+              ? `${classes.accountRoot} ${classes.accountCardBackgroundActive} ${classes.accountCardColorActive}`
+              : `${classes.accountRoot} ${classes.accountCardBackgroundInactive} ${classes.accountCardColorInactive}`
+          }
           style={{
             height: 62,
-            background: isAccountChecked(account.AccountId) ? '#36C6AF' : 'initial',
-            color: isAccountChecked(account.AccountId) ? '#fff' : 'initial',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -86,18 +102,17 @@ export default function BankCard({bankId, reconnect, accounts, balances, filteri
           </div>
         </div>
       ))}
-      <div style={{
+      <div className={classes.actionsBarColor} style={{
         height: 52,
         padding: '0 21px',
         background: 'rgba(54, 198, 175, 0.08)',
-        color: '#36C6AF',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
         <Typography>Open a new account</Typography>
         <IconButton>
-          <Plus style={{color: '#36C6AF'}}/>
+          <Plus className={classes.actionsBarColor}/>
         </IconButton>
       </div>
     </Card>
