@@ -11,14 +11,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%'
   },
   profileHeader: {
     marginBottom: 30
   },
   profileCard: {
-    padding: '60px 50px',
+    margin: '30px 0',
+    padding: '30px 50px',
     width: 'calc(100vw - 300px)',
   }
 }));
@@ -29,15 +28,25 @@ const Profile = ({auth, handleLogout}) => {
   const idToken = window.localStorage.getItem(authConfig.idTokenName);
   const idTokenData = idToken ? jwt_decode(idToken) : {};
 
+  const accessToken = window.localStorage.getItem(authConfig.accessTokenName);
+  const accessTokenData = accessToken ? jwt_decode(accessToken) : {};
+
   console.log(idTokenData, idTokenData);
 
   return (
     <div className={classes.root}>
       <Card className={classes.profileCard}>
         <div className={classes.profileHeader}>
-          <Typography>{`Hi, ${idTokenData.sub || 'user'}. Below are the contents of your OAuth ID token.`}</Typography>
+          <Typography variant="h5" component="h2">{`Hi, ${idTokenData.sub || 'user'}!`}</Typography>
         </div>
-        <ReactJson src={idTokenData} />
+        <div style={{marginTop: 20}}>
+          <Typography>{`The contents of your OAuth ID token:`}</Typography>
+        </div>
+        <ReactJson style={{marginTop: 20}} src={idTokenData} />
+        <div style={{marginTop: 20}}>
+          <Typography>{`The contents of your OAuth Access token:`}</Typography>
+        </div>
+        <ReactJson style={{marginTop: 20}} src={accessTokenData} />
       </Card>
     </div>
   );
