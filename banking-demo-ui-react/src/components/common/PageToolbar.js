@@ -1,4 +1,3 @@
-import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -15,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const subHeaderHeight = 116;
 
-const useStyles = (withSubheader: boolean, mode: string) =>
+const useStyles = (withSubheader, mode) =>
   makeStyles((theme) => ({
     appBar: {
       ...(withSubheader
@@ -73,6 +72,7 @@ export default function PageToolbar({
   tab,
   subHeaderTitle,
   subHeaderButton,
+  handleTabChange,
   handleLogout
 }) {
   const classes = useStyles(!!subHeaderTitle, mode)();
@@ -113,12 +113,19 @@ export default function PageToolbar({
                   value="accounts"
                   id={'accounts-tab'}
                   style={{ height: 64 }}
-                  onClick={() => {}}
+                  onClick={() => handleTabChange('accounts')}
                 />
-                <Tab label="Profile" value="profile" style={{ height: 64 }} />
+                <Tab
+                  label="Profile"
+                  value="profile"
+                  id={'profile-tab'}
+                  style={{ height: 64 }}
+                  onClick={() => handleTabChange('profile')}
+                />
               </Tabs>
             </Hidden>
             <Button
+              style={{marginLeft: 20}}
               variant="outlined"
               onClick={handleLogout}
             >

@@ -11,7 +11,7 @@ import Progress from './Progress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100%;'
+    height: '100%'
   }
 }));
 
