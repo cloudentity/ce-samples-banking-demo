@@ -4,11 +4,12 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import {
   FormControl,
   InputLabel,
   MenuItem,
-  TextField,
   Select
 } from '@material-ui/core';
 import {DollarSign} from 'react-feather';
@@ -58,16 +59,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
-  let {register, control, handleSubmit} = useForm();
+  let {register, setValue, control, handleSubmit} = useForm();
 
   const [transferFromAcct, setTransferFromAcct] = useState('none');
   const [transferToAcct, setTransferToAcct] = useState('none');
-  const [transferAmount, setTransferAmount] = useState('');
 
   const resetTransferValues = () => {
     setTransferFromAcct('none');
     setTransferToAcct('none');
-    setTransferAmount('');
+    setValue('transferAmount', '');
   };
 
   const submitTransfer = (formData) => {
@@ -137,12 +137,13 @@ const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
         </FormControl>
         <InputLabel style={{marginTop: 20, marginBottom: 10}}>Amount to Transfer</InputLabel>
         <FormControl className={classes.inputContainer}>
-          <TextField
+          <OutlinedInput
             id="transfer-amount-input"
             variant="outlined"
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
             name="transferAmount"
             {...register('transferAmount')}
-            defaultValue={'0'}
+            defaultValue={''}
             style={{width: 400, marginBottom: 30}}
           />
         </FormControl>
