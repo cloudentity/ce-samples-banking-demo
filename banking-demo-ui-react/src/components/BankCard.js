@@ -95,6 +95,7 @@ const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
               <Select
                 id="transfer-from-input"
                 className={'transfer-from'}
+                defaultValue={'none'}
                 onChange={(event) => {
                   setTransferFromAcct(event.target.value);
                   return event.target.value
@@ -108,11 +109,6 @@ const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
             )}
             name="transferFrom"
             control={control}
-            onChange={([ event ]) => {
-              setTransferFromAcct(event.target.value);
-              return event.target.value
-            }}
-            defaultValue={'none'}
           />
         </FormControl>
         <InputLabel style={{marginTop: 20, marginBottom: 10}}>Transfer TO:</InputLabel>
@@ -127,6 +123,7 @@ const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
               <Select
                 id="transfer-from-input"
                 className={'transfer-from'}
+                defaultValue={'none'}
                 onChange={(event) => {
                   setTransferToAcct(event.target.value);
                   return event.target.value
@@ -140,7 +137,6 @@ const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
             )}
             name="transferTo"
             control={control}
-            defaultValue={'none'}
           />
         </FormControl>
         <InputLabel style={{marginTop: 20, marginBottom: 10}}>Amount to Transfer</InputLabel>
