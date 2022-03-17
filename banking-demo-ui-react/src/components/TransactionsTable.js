@@ -224,8 +224,6 @@ export default function TransactionsTable({data, style = {}}) {
                       </TableCell>
                       <TableCell align="left">
                         <div style={{display: 'flex', alignItems: 'center', fontSize: 12}}>
-                          <Typography variant={'caption'} style={{marginRight: 8}}>Bank ID</Typography>
-                          <Typography style={{marginRight: 16}}>{row.bank_id}</Typography>
                           <Typography variant={'caption'} style={{marginRight: 8}}>Account ID</Typography>
                           <Typography>{row.account_id}</Typography>
                         </div>

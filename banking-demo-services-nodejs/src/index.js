@@ -35,6 +35,11 @@ app.get(apiPrefix + '/transactions', (req, res) => {
   res.send(transactionsData);
 });
 
+app.post(apiPrefix + '/transfer', (req, res) => {
+  res.send('null');
+  res.status(201).end();
+});
+
 app.get('/', (req, res) => {
   res.send('Service is alive');
 });

@@ -115,5 +115,4 @@ Then in the same file, in the JSX section, find the following block and follow t
 <div className={classes.textLogo}>
   <Typography variant="h5" component="h1">1st Demo Bank</Typography>
 </div>
-<div style={{ flex: 1 }} />
 ```

@@ -73,6 +73,7 @@ export default function PageToolbar({
   tab,
   subHeaderTitle,
   subHeaderButton,
+  handleLogout
 }) {
   const classes = useStyles(!!subHeaderTitle, mode)();
 
@@ -114,12 +115,12 @@ export default function PageToolbar({
                   style={{ height: 64 }}
                   onClick={() => {}}
                 />
-                <Tab label="Settings" value="settings" style={{ height: 64 }} />
+                <Tab label="Profile" value="profile" style={{ height: 64 }} />
               </Tabs>
             </Hidden>
             <Button
               variant="outlined"
-              onClick={() => {}}
+              onClick={handleLogout}
             >
               Logout
             </Button>

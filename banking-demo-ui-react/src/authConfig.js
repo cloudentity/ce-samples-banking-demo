@@ -7,8 +7,8 @@ const authConfig = {
      clientId: 'c80lu3k80udeg2mba10g',
      redirectUri: 'http://localhost:3000/',
      scopes: ['profile', 'email', 'openid'], // 'revoke_tokens' scope must be present for 'logout' action to revoke token! Without it, token will only be deleted from browser's local storage.
-     accessTokenName: 'profile_demo_access_token', // optional; defaults to '{tenantId}_{authorizationServerId}_access_token'
-     idTokenName: 'profile_demo_id_token', // optional; defaults to '{tenantId}_{authorizationServerId}_id_token'
+     accessTokenName: 'banking_demo_access_token', // optional; defaults to '{tenantId}_{authorizationServerId}_access_token'
+     idTokenName: 'banking_demo_id_token', // optional; defaults to '{tenantId}_{authorizationServerId}_id_token'
  };
 
  export default authConfig;

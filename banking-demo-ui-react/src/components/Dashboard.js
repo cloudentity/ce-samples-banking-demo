@@ -54,7 +54,6 @@ export default function Dashboard ({banks, onConnectClick, onDisconnect, onRecon
   // const bankNeedsReconnect = path(['response', 'error', 'status'], fetchAccountsError) === 401;
 
   if (isLoading) {
-    console.log('progress')
     return <Progress/>;
   }
 

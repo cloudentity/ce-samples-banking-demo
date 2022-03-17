@@ -1,8 +1,4 @@
 import { Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core';
-import { StylesProvider } from '@material-ui/core/styles';
-import { theme } from '../theme';
-
 import Dashboard from './Dashboard';
 import PageContent from './common/PageContent';
 import PageToolbar from './common/PageToolbar';
@@ -25,27 +21,24 @@ const Authorized = ({auth, handleLogout}) => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <StylesProvider injectFirst>
-            <div>
-              {auth === null && <div>Loading...</div>}
-              {auth === false && <Navigate to='/' />}
-              {auth && (
-                <div style={{ position: 'relative' }}>
-                  <PageToolbar
-                    mode="main"
-                    authorizationServerURL={'authorizationServerURL'}
-                    authorizationServerId={'authorizationServerId'}
-                    tenantId={'tenantId'}
-                  />
-                  <PageContent>
-                    <Dashboard banks={banks} />
-                  </PageContent>
-                </div>
-              )}
+        <div>
+          {auth === null && <div>Loading...</div>}
+          {auth === false && <Navigate to='/' />}
+          {auth && (
+            <div style={{ position: 'relative' }}>
+              <PageToolbar
+                mode="main"
+                authorizationServerURL={'authorizationServerURL'}
+                authorizationServerId={'authorizationServerId'}
+                tenantId={'tenantId'}
+                handleLogout={handleLogout}
+              />
+              <PageContent>
+                <Dashboard banks={banks} />
+              </PageContent>
             </div>
-          </StylesProvider>
-        </ThemeProvider>
+          )}
+        </div>
       </QueryClientProvider>
     </>
   );

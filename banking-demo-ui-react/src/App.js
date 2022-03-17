@@ -3,6 +3,9 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core';
+import { StylesProvider } from '@material-ui/core/styles';
+import { theme } from './theme';
 import Unauthorized from './components/Unauthorized';
 import Authorized from './components/Authorized';
 import './App.css';
@@ -30,14 +33,20 @@ function App() {
   };
 
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Unauthorized className="App" auth={authenticated} handleLogin={authorize} />} />
-          <Route path="authorized" element={<Authorized auth={authenticated} handleLogout={clearAuth} />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <>
+      <ThemeProvider theme={theme}>
+        <StylesProvider injectFirst>
+          <div>
+            <BrowserRouter>
+              <Routes>
+                <Route index element={<Unauthorized className="App" auth={authenticated} handleLogin={authorize} />} />
+                <Route path="authorized" element={<Authorized auth={authenticated} handleLogout={clearAuth} />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </StylesProvider>
+      </ThemeProvider>
+    </>
   );
 }
 
