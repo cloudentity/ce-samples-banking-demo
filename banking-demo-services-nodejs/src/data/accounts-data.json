@@ -1,0 +1,32 @@
+[
+  {
+    "AccountId": "22289",
+    "Status": "Enabled",
+    "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+    "Currency": "USD",
+    "AccountType": "Personal",
+    "AccountSubType": "CurrentAccount",
+    "Nickname": "Checking",
+    "Account": [{
+      "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+      "Identification": "80200110203345",
+      "Name": "Mr Kevin",
+      "SecondaryIdentification": "00021"
+      }]
+  },
+  {
+    "AccountId": "31820",
+    "Status": "Enabled",
+    "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+    "Currency": "USD",
+    "AccountType": "Personal",
+    "AccountSubType": "CurrentAccount",
+    "Nickname": "Savings",
+    "Account": [{
+      "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+      "Identification": "80200110203348",
+      "Name": "Mr Kevin",
+      "SecondaryIdentification": ""
+    }]
+  }
+]

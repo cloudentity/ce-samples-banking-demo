@@ -1,0 +1,34 @@
+[
+  {
+    "AccountId": "22289",
+    "Amount": "1230.00",
+    "Currency": "USD",
+    "CreditDebitIndicator": "Credit",
+    "Type": "InterimAvailable",
+    "DateTime": "2017-04-05T10:43:07+00:00",
+    "CreditLine": [{
+      "Included": true,
+      "Amount": {
+        "Amount": "1000.00",
+        "Currency": "USD"
+      },
+      "Type": "Temporary"
+    }]
+  },
+  {
+    "AccountId": "31820",
+    "Amount": "57.36",
+    "Currency": "USD",
+    "CreditDebitIndicator": "Debit",
+    "Type": "InterimBooked",
+    "DateTime": "2017-05-02T14:22:09+00:00"
+  },
+  {
+    "AccountId": "31821",
+    "Amount": "99.36",
+    "Currency": "USD",
+    "CreditDebitIndicator": "Debit",
+    "Type": "InterimBooked",
+    "DateTime": "2017-05-02T14:22:09+00:00"
+  }
+]
