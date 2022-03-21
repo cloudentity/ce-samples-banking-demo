@@ -1,6 +1,7 @@
 import superagent from 'superagent';
+import authConfig from '../authConfig';
 
-const getTokenFromStore = () => localStorage.getItem('access_token');
+const getTokenFromStore = () => localStorage.getItem(authConfig.accessTokenName);
 
 export const toJson = response => response.text ? JSON.parse(response.text) : {};
 
