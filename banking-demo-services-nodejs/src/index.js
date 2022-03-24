@@ -6,11 +6,14 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const morgan = require('morgan');
 
 const app = express();
 const port = 5002;
 const apiPrefix = '/api';
 require('dotenv').config();
+
+app.use(morgan('combined'));
 
 const accountsDataFile = fs.readFileSync(path.resolve(__dirname, 'data/accounts-data.json'));
 const accountsData = JSON.parse(accountsDataFile);
