@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
+const TransferMoneyDialog = ({open, accountData, handleClose, error, classes}) => {
   let {register, setValue, control, handleSubmit} = useForm();
 
   const [transferFromAcct, setTransferFromAcct] = useState('none');
@@ -147,6 +147,9 @@ const TransferMoneyDialog = ({open, accountData, handleClose, classes}) => {
             style={{width: 400, marginBottom: 30}}
           />
         </FormControl>
+        <div style={{color: 'red', marginBottom: 30, height: 10, textAlign: 'center'}}>
+          {error}
+        </div>
         <div style={{display: 'flex', justifyContent: 'flex-end'}}>
           <Button className={classes.datasetButton} onClick={() => {
             handleClose('cancel');
@@ -168,17 +171,21 @@ export default function BankCard ({bankId, reconnect, accounts, balances, filter
   const classes = useStyles();
 
   const [transferDialogOpen, setTransferDialogOpen] = useState(false);
+  const [transferDialogError, setTransferDialogError] = useState('');
 
   const handleChangeTransferDialogState = (action, data) => {
     if (action === 'cancel') {
       setTransferDialogOpen(false);
+      setTransferDialogError('');
     }
     if (action === 'confirm') {
+      setTransferDialogError('');
       api.transferMoney(data)
       .then(() => setTransferDialogOpen(false))
       .catch((err) => {
-        console.log('API error', err);
-        setTransferDialogOpen(false);
+        err?.status === 403
+          ? setTransferDialogError('You are not authorized to perform this action.')
+          : setTransferDialogError(err?.response?.body?.message || 'Sorry, a server error occred.');
       });
     }
   };
@@ -265,6 +272,7 @@ export default function BankCard ({bankId, reconnect, accounts, balances, filter
         open={transferDialogOpen}
         accountData={accounts}
         handleClose={handleChangeTransferDialogState}
+        error={transferDialogError}
         classes={classes}
       />
     </Card>
