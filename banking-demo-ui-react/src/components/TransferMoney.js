@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -15,6 +15,7 @@ import {useForm, Controller} from 'react-hook-form';
 import { Link } from 'react-router-dom';
 // import {banks} from './banks';
 import CloudentityAuth from '@cloudentity/auth';
+import jwt_decode from 'jwt-decode';
 import authConfig from '../authConfig';
 import {filter, pathOr} from 'ramda';
 import { api } from '../api/api';
@@ -51,44 +52,67 @@ const styles = theme => ({
 const TransferMoney = ({accountData, classes}) => {
   let {register, watch, formState, setValue, control, handleSubmit} = useForm();
 
+  const { state } = useLocation();
+
+  if (state?.transferAmount) {
+    setValue('transferAmount', state?.transferAmount);
+  }
+
+  const stateContainsConfirmValues = !!(state?.transferFromAcct && state?.transferToAcct && state?.transferAmount);
+
   const [transferDialogOpen, setTransferDialogOpen] = useState(true);
   const [transferDialogSuccess, setTransferDialogSuccess] = useState(false);
   const [transferDialogError, setTransferDialogError] = useState('');
-  const [transferFromAcct, setTransferFromAcct] = useState('none');
-  const [transferToAcct, setTransferToAcct] = useState('none');
+  const [transferFromAcct, setTransferFromAcct] = useState(state?.transferFromAcct || 'none');
+  const [transferToAcct, setTransferToAcct] = useState(state?.transferToAcct || 'none');
 
   const handleChangeTransferDialogState = (action, data) => {
     if (action === 'cancel') {
       setTransferDialogOpen(false);
       setTransferDialogError('');
+      if (state?.transferAmount) {
+        window.localStorage.removeItem(`${authConfig.accessTokenName}_transfer.${state?.transferAmount}`);
+      }
     }
     if (action === 'confirm') {
       setTransferDialogError('');
+      const transferAccessTokenName = `${authConfig.accessTokenName}_transfer.${data.transferAmount}`;
+      const transferAccessToken = window.localStorage.getItem(transferAccessTokenName);
+
       const transferAuthConfig = {
         ...authConfig,
         ...{
-          accessTokenName: `${authConfig.accessTokenName}.transfer.${data.transferAmount}`,
-          // scopes: [`transfer.${data.transferAmount}`],
+          accessTokenName: transferAccessTokenName,
+          scopes: [`transfer.${data.transferAmount}`],
           redirectUri: 'http://localhost:3000/transfer-callback',
         }
       };
       const transferAuth = new CloudentityAuth(transferAuthConfig);
-      transferAuth.authorize();
 
-      // TODO: finish token minting flow before wiring API
-      // api.transferMoney(data)
-      //   .then(() => setTransferDialogSuccess(true))
-      //   .catch((err) => {
-      //     err?.status === 403
-      //       ? setTransferDialogError('You are not authorized to perform this action.')
-      //       : setTransferDialogError(err?.response?.body?.message || 'Sorry, a server error occred.');
-      //   });
+      if (transferAccessToken) {
+        transferAuth.getAuth()
+          .then(res => {
+            api.transferMoney(data, transferAccessTokenName)
+              .then(() => setTransferDialogSuccess(true))
+              .catch((err) => {
+                err?.status === 403
+                  ? setTransferDialogError('You are not authorized to perform this action.')
+                  : setTransferDialogError(err?.response?.body?.message || 'Sorry, a server error occred.');
+              });
+          })
+          .catch(err => {
+            console.log('auth error', err);
+            setTransferDialogError('Access token expired or invalid');
+          })
+      } else {
+        transferAuth.authorize({state: window.btoa(JSON.stringify(data))});
+      }
     }
   };
 
   const activeError = !!pathOr(false, ['errors', 'transferAmount'], formState);
 
-  const submitDisabled = !watch('transferAmount') || activeError || transferFromAcct === 'none' || transferToAcct === 'none';
+  const submitDisabled = (!state?.transferAmount && !watch('transferAmount')) || activeError || transferFromAcct === 'none' || transferToAcct === 'none';
 
   const resetTransferValues = () => {
     setTransferFromAcct('none');
@@ -121,20 +145,26 @@ const TransferMoney = ({accountData, classes}) => {
           <div style={{display: 'flex', justifyContent: 'space-around', marginBottom: 20}}>
             <Typography variant="h5" component="h5">Transfer Money</Typography>
           </div>
+          {stateContainsConfirmValues && (
+            <div style={{display: 'flex', justifyContent: 'space-around', marginBottom: 20}}>
+              <p style={{color: '#000'}}>Thank you for verifying your account. You may now confirm your transfer.</p>
+            </div>
+          )}
           <InputLabel style={{marginBottom: 10}}>Transfer FROM:</InputLabel>
           <FormControl
             variant="outlined"
             style={{width: 400}}
           >
             <Controller
-              render={({ field: { onChange, onBlur, value, ref } }) => (
+              render={() => (
                 <Select
                   id="transfer-from-input"
-                  defaultValue={'none'}
+                  defaultValue={state?.transferFromAcct || 'none'}
                   onChange={(event) => {
                     setTransferFromAcct(event.target.value);
                     return event.target.value
                   }}
+                  disabled={stateContainsConfirmValues}
                 >
                   <MenuItem value={'none'} disabled>Choose an account to transfer from</MenuItem>
                   {accountData && Array.isArray(accountData) && accountData.map((account) => (
@@ -153,14 +183,15 @@ const TransferMoney = ({accountData, classes}) => {
             disabled={transferFromAcct === 'none'}
           >
             <Controller
-              render={({ field: { onChange, onBlur, value, ref } }) => (
+              render={() => (
                 <Select
                   id="transfer-from-input"
-                  defaultValue={'none'}
+                  defaultValue={state?.transferToAcct || 'none'}
                   onChange={(event) => {
                     setTransferToAcct(event.target.value);
                     return event.target.value
                   }}
+                  disabled={stateContainsConfirmValues}
                 >
                   <MenuItem value={'none'} disabled>Choose an account to transfer to</MenuItem>
                   {accountData && Array.isArray(accountData) && accountData.map((account) => (
@@ -183,7 +214,8 @@ const TransferMoney = ({accountData, classes}) => {
                 validate: v => /^\d+(?:\.\d{0,2})$/.test(v.trim()) || 'Please enter a valid amount.'
               })}
               error={activeError}
-              defaultValue={''}
+              disabled={stateContainsConfirmValues}
+              defaultValue={state?.transferAmount || ''}
               style={{width: 400, marginBottom: 30}}
             />
           </FormControl>

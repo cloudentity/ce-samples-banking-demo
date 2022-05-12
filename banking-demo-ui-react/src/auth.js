@@ -5,7 +5,7 @@ export const useAuth = (auth) => {
   const [authenticated, setAuthentication] = useState(null);
 
   function removeQueryString() {
-    if (window.location.href.split('?').length > 1) {
+    if (!(window.location.href.split('transfer-callback').length > 1) && window.location.href.split('?').length > 1) {
       window.history.replaceState({}, document.title, window.location.href.replace(/\?.*$/, ''));
     }
   }
