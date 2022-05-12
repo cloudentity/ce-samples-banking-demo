@@ -6,6 +6,7 @@ import Transactions from './Transactions';
 import { useQuery } from 'react-query';
 import { api } from '../api/api';
 import Progress from './Progress';
+import TransferMoney from './TransferMoney';
 // import {applyFiltering} from './analytics.utils';
 // import {path, pick} from 'ramda';
 
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Dashboard ({banks, onConnectClick, onDisconnect, onReconnect}) {
+export default function Dashboard ({viewId, banks, onConnectClick, onDisconnect, onReconnect}) {
   const classes = useStyles();
   const [filtering, setFiltering] = useState({
     accounts: [],
@@ -72,7 +73,8 @@ export default function Dashboard ({banks, onConnectClick, onDisconnect, onRecon
         />
       </Grid>
       <Grid item xs={8} style={{background: '#FCFCFF', padding: '32px 32px 16px 32px'}}>
-        <Transactions transactions={transactions} filtering={filtering} onChangeFiltering={f => setFiltering({...filtering, ...f})} />
+        {viewId === 'accounts' && <Transactions transactions={transactions} filtering={filtering} onChangeFiltering={f => setFiltering({...filtering, ...f})} />}
+        {viewId === 'transfer' && <TransferMoney accountData={accounts} />}
       </Grid>
     </Grid>
   )

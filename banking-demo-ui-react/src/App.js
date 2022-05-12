@@ -40,7 +40,10 @@ function App() {
             <BrowserRouter>
               <Routes>
                 <Route index element={<Unauthorized className="App" auth={authenticated} handleLogin={authorize} />} />
-                <Route path="authorized" element={<Authorized auth={authenticated} handleLogout={clearAuth} />} />
+                <Route path="accounts" element={<Authorized auth={authenticated} viewId={'accounts'} handleLogout={clearAuth} />} />
+                <Route path="transfer" element={<Authorized auth={authenticated} viewId={'transfer'} handleLogout={clearAuth} />} />
+                <Route path="transfer-callback" element={<Unauthorized className="App" auth={authenticated} handleLogin={authorize} redirectPath='/transfer' />} />
+                <Route path="profile" element={<Authorized auth={authenticated} viewId={'profile'} handleLogout={clearAuth} />} />
               </Routes>
             </BrowserRouter>
           </div>

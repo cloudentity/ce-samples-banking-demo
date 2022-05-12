@@ -8,6 +8,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 // Uncomment and change the line below to point to your own logo image
 // import logoImage from '../../assets/logo-example.svg';
@@ -113,14 +114,16 @@ export default function PageToolbar({
                   value="accounts"
                   id={'accounts-tab'}
                   style={{ height: 64 }}
-                  onClick={() => handleTabChange('accounts')}
+                  component={Link}
+                  to={'/'}
                 />
                 <Tab
                   label="Profile"
                   value="profile"
                   id={'profile-tab'}
                   style={{ height: 64 }}
-                  onClick={() => handleTabChange('profile')}
+                  component={Link}
+                  to={'/profile'}
                 />
               </Tabs>
             </Hidden>

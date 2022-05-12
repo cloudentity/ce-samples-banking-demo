@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Unauthorized = ({className, auth, handleLogin}) => {
+const Unauthorized = ({className, auth, handleLogin, redirectPath}) => {
   const classes = useStyles();
 
   return (
@@ -63,7 +63,7 @@ const Unauthorized = ({className, auth, handleLogin}) => {
             </Card>
           </div>
         )}
-        {auth && <Navigate to='/authorized' />}
+        {auth && <Navigate to={redirectPath || '/accounts'} />}
       </PageContent>
     </div>
   );
