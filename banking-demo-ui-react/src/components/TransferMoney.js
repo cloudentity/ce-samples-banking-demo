@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { withStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import ReactJson from 'react-json-view';
+import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -47,6 +49,11 @@ const styles = theme => ({
     },
   },
   inputContainer: {},
+  accessTokenCard: {
+    margin: '30px 0',
+    padding: '30px 50px',
+    width: '90%',
+  }
 });
 
 const TransferMoney = ({accountData, classes}) => {
@@ -65,6 +72,9 @@ const TransferMoney = ({accountData, classes}) => {
   const [transferDialogError, setTransferDialogError] = useState('');
   const [transferFromAcct, setTransferFromAcct] = useState(state?.transferFromAcct || 'none');
   const [transferToAcct, setTransferToAcct] = useState(state?.transferToAcct || 'none');
+
+  const activeAccessToken = window.localStorage.getItem(`${authConfig.accessTokenName}_transfer.${state?.transferAmount}`);
+  const activeAccessTokenData = activeAccessToken ? jwt_decode(activeAccessToken) : {};
 
   const handleChangeTransferDialogState = (action, data) => {
     if (action === 'cancel') {
@@ -234,6 +244,14 @@ const TransferMoney = ({accountData, classes}) => {
               Confirm
             </Button>
           </div>
+          {activeAccessToken && (
+            <Card className={classes.accessTokenCard}>
+              <div style={{marginTop: 20}}>
+                <Typography>{`The contents of your OAuth Access token for this transfer:`}</Typography>
+              </div>
+              <ReactJson style={{marginTop: 20}} src={activeAccessTokenData} />
+            </Card>
+          )}
         </>
       )}
       {!transferDialogOpen && <Navigate to='/accounts' />}
