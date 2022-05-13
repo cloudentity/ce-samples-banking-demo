@@ -1,19 +1,29 @@
 import {useState, useEffect} from 'react';
+import authConfig from './authConfig';
 
 export const useAuth = (auth) => {
   const [authenticated, setAuthentication] = useState(null);
 
   function removeQueryString() {
-    if (window.location.href.split('?').length > 1) {
+    if (!(window.location.href.split('transfer-callback').length > 1) && window.location.href.split('?').length > 1) {
       window.history.replaceState({}, document.title, window.location.href.replace(/\?.*$/, ''));
     }
   }
 
   useEffect(() => {
-    auth.getAuth().then((res) => {
+    const dynamicRedirectUri = window.location.href.split('transfer-callback').length > 1
+      ? {dynamicRedirectUri: authConfig.redirectUri + 'transfer-callback'}
+      : {};
+
+    auth.getAuth(dynamicRedirectUri).then((res) => {
       if (res) {
         console.log('auth response:', JSON.stringify(res));
-        removeQueryString();
+        if (res.scope && res.scope.split(' ').length === 1 && res.scope.startsWith('transfer')) {
+          window.localStorage.setItem(`${authConfig.accessTokenName}_${res.scope}`, res.access_token);
+        } else {
+          window.localStorage.setItem(authConfig.accessTokenName, res.access_token);
+        }
+        // removeQueryString();
       }
       setAuthentication(true);
     })

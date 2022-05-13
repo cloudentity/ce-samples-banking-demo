@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { Navigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
@@ -11,7 +11,7 @@ import authConfig from '../authConfig';
 import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
-const Authorized = ({auth, handleLogout}) => {
+const Authorized = ({auth, viewId, handleLogout}) => {
   const idToken = window.localStorage.getItem(authConfig.idTokenName);
   const idTokenData = idToken ? jwt_decode(idToken) : {};
 
@@ -36,7 +36,7 @@ const Authorized = ({auth, handleLogout}) => {
             <div style={{ position: 'relative' }}>
               <PageToolbar
                 mode="main"
-                tab={currentTab}
+                tab={viewId === 'transfer' ? 'accounts' : viewId}
                 authorizationServerURL={'authorizationServerURL'}
                 authorizationServerId={'authorizationServerId'}
                 tenantId={'tenantId'}
@@ -44,8 +44,8 @@ const Authorized = ({auth, handleLogout}) => {
                 handleLogout={handleLogout}
               />
               <PageContent>
-                {currentTab === 'accounts' && <Dashboard banks={banks} />}
-                {currentTab === 'profile' && <Profile />}
+                {(viewId === 'accounts' || viewId === 'transfer') && <Dashboard banks={banks} viewId={viewId} />}
+                {viewId === 'profile' && <Profile />}
               </PageContent>
             </div>
           )}

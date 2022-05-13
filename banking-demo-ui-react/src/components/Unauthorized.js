@@ -35,8 +35,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Unauthorized = ({className, auth, handleLogin}) => {
+const Unauthorized = ({className, auth, handleLogin, redirectPath}) => {
   const classes = useStyles();
+
+  const queryParams = Object.fromEntries((new URLSearchParams(window.location.search)).entries());
+
+  const parseState = (base64) => {
+    if (base64) {
+      try {
+        return JSON.parse(window.atob(base64))
+      } catch {
+        return {};
+      }
+    }
+    return {};
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -63,7 +76,8 @@ const Unauthorized = ({className, auth, handleLogin}) => {
             </Card>
           </div>
         )}
-        {auth && <Navigate to='/authorized' />}
+        {auth && !redirectPath && <Navigate to={'/accounts'} />}
+        {auth && redirectPath && <Navigate to={redirectPath} state={parseState(queryParams.state)} />}
       </PageContent>
     </div>
   );

@@ -1,7 +1,7 @@
 import superagent from 'superagent';
 import authConfig from '../authConfig';
 
-const getTokenFromStore = () => localStorage.getItem(authConfig.accessTokenName);
+const getTokenFromStore = (customTokenName) => localStorage.getItem(customTokenName || authConfig.accessTokenName);
 
 export const toJson = response => response.text ? JSON.parse(response.text) : {};
 
@@ -9,7 +9,7 @@ const normalize = path => path.replace(/\/\/+/g, '/');
 
 const buildUrl = (origin, base, path) => origin + normalize(base + '/' + path);
 
-const accessTokenHeader = () => ['Authorization', `Bearer ${getTokenFromStore()}`];
+const accessTokenHeader = (customTokenName) => ['Authorization', `Bearer ${getTokenFromStore(customTokenName)}`];
 
 const http = (request, origin, baseUrl) => ({
   get: ({url, query = null, responseType = null, callback = toJson}) => request
@@ -18,11 +18,11 @@ const http = (request, origin, baseUrl) => ({
     .responseType(responseType)
     .set(...accessTokenHeader())
     .then(callback),
-  post: ({url, body, query}) => request
+  post: ({url, body, customTokenName, query = null}) => request
     .post(buildUrl(origin, baseUrl, url))
     .query(query)
     .send(body)
-    .set(...accessTokenHeader())
+    .set(...accessTokenHeader(customTokenName))
     .then(toJson),
   put: ({url, body}) => request
     .put(buildUrl(origin, baseUrl, url))
