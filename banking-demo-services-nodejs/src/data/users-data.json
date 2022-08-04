@@ -1,0 +1,158 @@
+[
+  {
+    "userId": "12345",
+    "firstName": "Joe",
+    "lastName": "Snyder",
+    "email": "jsnyder88@frontier.com",
+    "withdrawalLimit": 250,
+    "accounts": [
+      {
+        "AccountId": "22289",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Checking",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110207641",
+          "Name": "Joe Snyder",
+          "SecondaryIdentification": "00021"
+          }]
+      },
+      {
+        "AccountId": "31820",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Savings",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110204399",
+          "Name": "Joe Snyder",
+          "SecondaryIdentification": ""
+        }]
+      }
+    ]
+  },
+  {
+    "userId": "65433",
+    "firstName": "Jane",
+    "lastName": "Newman",
+    "email": "jane_newman_33@yahoo.com",
+    "withdrawalLimit": 500,
+    "accounts": [
+      {
+        "AccountId": "27283",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Checking",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110206397",
+          "Name": "Jane Newman",
+          "SecondaryIdentification": "00021"
+          }]
+      },
+      {
+        "AccountId": "51330",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Savings",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110237832",
+          "Name": "Jane Newman",
+          "SecondaryIdentification": ""
+        }]
+      }
+    ]
+  },
+  {
+    "userId": "87698",
+    "firstName": "Terri",
+    "lastName": "Hill",
+    "email": "terri.hill.345@gmail.com",
+    "withdrawalLimit": 250,
+    "accounts": [
+      {
+        "AccountId": "29382",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Checking",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110207429",
+          "Name": "Terri Hill",
+          "SecondaryIdentification": "00021"
+          }]
+      },
+      {
+        "AccountId": "10920",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Savings",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110206201",
+          "Name": "Terri Hill",
+          "SecondaryIdentification": ""
+        }]
+      }
+    ]
+  },
+  {
+    "userId": "845364",
+    "firstName": "Mark",
+    "lastName": "Garvey",
+    "email": "mgarvey71@centurylink.com",
+    "withdrawalLimit": 250,
+    "accounts": [
+      {
+        "AccountId": "55318",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Checking",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110203345",
+          "Name": "Mark Garvey",
+          "SecondaryIdentification": "00021"
+          }]
+      },
+      {
+        "AccountId": "612856",
+        "Status": "Enabled",
+        "StatusUpdateDateTime": "0001-01-01T00:00:00Z",
+        "Currency": "USD",
+        "AccountType": "Personal",
+        "AccountSubType": "CurrentAccount",
+        "Nickname": "Savings",
+        "Account": [{
+          "SchemeName": "UK.OBIE.SortCodeAccountNumber",
+          "Identification": "80200110208577",
+          "Name": "Mark Garvey",
+          "SecondaryIdentification": ""
+        }]
+      }
+    ]
+  }
+]

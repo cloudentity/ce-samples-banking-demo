@@ -66,6 +66,7 @@ const useStyles = (withSubheader, mode) =>
 
 export default function PageToolbar({
   mode,
+  role,
   children,
   authorizationServerURL,
   authorizationServerId,
@@ -104,19 +105,30 @@ export default function PageToolbar({
             </Hidden>
             <Hidden smDown>
               <Tabs
-                value={tab || 'accounts'}
+                value={tab || (role === 'admin' ? 'admin' : 'accounts')}
                 indicatorColor="primary"
                 aria-label="menu tabs"
                 style={{ height: 64 }}
               >
-                <Tab
-                  label="Accounts"
-                  value="accounts"
-                  id={'accounts-tab'}
-                  style={{ height: 64 }}
-                  component={Link}
-                  to={'/'}
-                />
+                {role === 'admin' ? (
+                  <Tab
+                    label="Admin Dashboard"
+                    value="admin"
+                    id={'admin-dashboard'}
+                    style={{ height: 64 }}
+                    component={Link}
+                    to={'/'}
+                  />
+                ) : (
+                  <Tab
+                    label="Accounts"
+                    value="accounts"
+                    id={'accounts-tab'}
+                    style={{ height: 64 }}
+                    component={Link}
+                    to={'/'}
+                  />
+                )}
                 <Tab
                   label="Profile"
                   value="profile"
