@@ -12,10 +12,11 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
+import ReactJson from 'react-json-view';
 import {useForm, Controller} from 'react-hook-form';
 import {filter, pathOr, isEmpty} from 'ramda';
 
-export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, handleClose, apiError, classes}) {
+export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, handleClose, apiError, successData, classes}) {
 
   let {register, formState, setValue, handleSubmit, clearErrors} = useForm();
 
@@ -38,40 +39,58 @@ export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, h
       onClose={handleClose}
     >
       <div className={classes.dialogRootStyles}>
-        <div style={{display: 'flex', justifyContent: 'space-around', marginBottom: 20}}>
-          <Typography variant="h5" component="h5">Change daily withdrawal limit</Typography>
-        </div>
+        {successData ? (
+          <>
+            <div style={{display: 'flex', justifyContent: 'space-around', marginBottom: 20}}>
+              <Typography variant="h5" component="h5">Success</Typography>
+            </div>
 
-        <div>
-          <InputLabel style={{marginTop: 20, marginBottom: 10}}>Edit user's daily withdrawal limit</InputLabel>
-          <FormControl className={classes.inputContainer}>
-            <OutlinedInput
-              id="withdrawal-limit-amount-input"
-              variant="outlined"
-              startAdornment={<InputAdornment position="start">$</InputAdornment>}
-              name="withdrawalLimitAmount"
-              {...register('withdrawalLimitAmount', {
-                validate: v => /^[0-9]+$/.test(v.trim()) || 'Please enter a valid amount.'
-              })}
-              error={activeError}
-              defaultValue={userData.withdrawalLimit || ''}
-              style={{width: 400, marginBottom: 30}}
-            />
-          </FormControl>
-          <div style={{color: 'red', marginBottom: 30, height: 10}}>
-            {pathOr(apiError, ['errors', 'withdrawalLimitAmount', 'message'], formState)}
-          </div>
-        </div>
+            <ReactJson style={{marginTop: 20}} src={successData} />
 
-        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-          <Button className={classes.dialogCancelButton} onClick={() => handleClose('cancel')}>
-            Cancel
-          </Button>
-          <div style={{width: 10}}></div>
-          <Button className={classes.dialogConfirmButton} disabled={false} onClick={handleSubmit(submitChangeWithdrawalLimit)}>
-            Confirm
-          </Button>
-        </div>
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <Button className={classes.dialogConfirmButton} onClick={() => handleClose('cancel')}>
+                Done
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{display: 'flex', justifyContent: 'space-around', marginBottom: 20}}>
+              <Typography variant="h5" component="h5">Change daily withdrawal limit</Typography>
+            </div>
+
+            <div>
+              <InputLabel style={{marginTop: 20, marginBottom: 10}}>Edit user's daily withdrawal limit</InputLabel>
+              <FormControl className={classes.inputContainer}>
+                <OutlinedInput
+                  id="withdrawal-limit-amount-input"
+                  variant="outlined"
+                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                  name="withdrawalLimitAmount"
+                  {...register('withdrawalLimitAmount', {
+                    validate: v => /^[0-9]+$/.test(v.trim()) || 'Please enter a valid amount.'
+                  })}
+                  error={activeError}
+                  defaultValue={userData.withdrawalLimit || ''}
+                  style={{width: 400, marginBottom: 30}}
+                />
+              </FormControl>
+              <div style={{color: 'red', marginBottom: 30, height: 10}}>
+                {pathOr(apiError, ['errors', 'withdrawalLimitAmount', 'message'], formState)}
+              </div>
+            </div>
+
+            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <Button className={classes.dialogCancelButton} onClick={() => handleClose('cancel')}>
+                Cancel
+              </Button>
+              <div style={{width: 10}}></div>
+              <Button className={classes.dialogConfirmButton} disabled={false} onClick={handleSubmit(submitChangeWithdrawalLimit)}>
+                Confirm
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </Dialog>
   );

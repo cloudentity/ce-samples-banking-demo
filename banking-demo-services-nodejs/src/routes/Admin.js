@@ -28,7 +28,7 @@ router.post('/change-user-withdrawal-limit', (req, res) => {
     .then(changeLimitRes => {
       usersData = updateUsersData(req.body || {});
       res.status(200);
-      res.send(JSON.stringify({}));
+      res.send(JSON.stringify({identifier: req.body?.identifier, newWithdrawalLimit: req.body?.withdrawalLimitAmount}));
     })
     .catch(err => {
       ErrorService.sendErrorResponse(err, res);

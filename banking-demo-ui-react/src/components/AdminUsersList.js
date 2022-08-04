@@ -71,7 +71,7 @@ const headCells = [
   {id: 'firstName', numeric: false, disablePadding: false, label: 'First name'},
   {id: 'lastName', numeric: false, disablePadding: false, label: 'Last name'},
   {id: 'withdrawalLimit', numeric: false, disablePadding: false, label: 'Daily withdrawal limit'},
-  {id: 'accounts', numeric: false, disablePadding: false, label: 'Accounts'}
+  {id: 'accounts', numeric: false, disablePadding: false, label: '# of Accounts'}
 ];
 
 function EnhancedTableHead (props) {
@@ -189,6 +189,7 @@ export default function AdminUsersList({
   const [dense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [changeLimitDialogOpen, setChangeLimitDialogOpen] = useState(false);
+  const [changeLimitSuccessData, setChangeLimitSuccessData] = useState(false);
   const [changeLimitApiError, setChangeLimitApiError] = useState('');
   const [currentUserActionData, setCurrentUserActionData] = useState({});
   const [refreshList, initRefreshList] = useState(false);
@@ -201,7 +202,9 @@ export default function AdminUsersList({
   const clearChangeLimitData = () => {
     setChangeLimitDialogOpen(false);
     setCurrentUserActionData({});
+    setChangeLimitSuccessData(null);
     setChangeLimitApiError('');
+    handleRefreshList();
   }
 
   const handleCloseChangeLimitDialog = (action, data) => {
@@ -210,9 +213,8 @@ export default function AdminUsersList({
     }
     if (action === 'confirm') {
       api.adminChangeWithdrawalLimit(data)
-        .then(() => {
-          clearChangeLimitData();
-          handleRefreshList();
+        .then(res => {
+          setChangeLimitSuccessData(res);
         })
         .catch((err) => {
           console.log('API error', err);
@@ -351,6 +353,7 @@ export default function AdminUsersList({
         handleClose={handleCloseChangeLimitDialog}
         userData={currentUserActionData}
         apiError={changeLimitApiError}
+        successData={changeLimitSuccessData}
         classes={classes}
       />
     </div>
