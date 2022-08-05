@@ -11,6 +11,8 @@ require('dotenv').config();
 const ServerAuth = require('./services/utils/ServerAuth');
 const accountsRoute = require('./routes/Accounts');
 const adminRoute = require('./routes/Admin');
+const keyStoreRoute = require('./routes/KeyStore');
+const tokenRoute = require('./routes/Token');
 
 const app = express();
 app.use(express.json());
@@ -33,6 +35,8 @@ app.use(morgan('combined'));
 
 app.use(apiPrefix + '/accounts', accountsRoute);
 app.use(apiPrefix + '/admin', adminRoute);
+app.use(apiPrefix + '/jwks', keyStoreRoute);
+app.use(apiPrefix + '/token', tokenRoute);
 
 app.get('/', (req, res) => {
   res.send('Service is alive');

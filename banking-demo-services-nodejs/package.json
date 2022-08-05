@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js",
+    "generate-keys": "node src/generateKeys.js",
+    "start": "nodemon src/index.js --ignore keys.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,6 +22,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "jwt-decode": "^3.1.2",
+    "node-jose": "^2.1.1",
     "qs": "^6.10.3",
     "simple-oauth2": "^4.3.0"
   }

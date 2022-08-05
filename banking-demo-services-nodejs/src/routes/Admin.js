@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const ServerAuth = require('../services/utils/ServerAuth');
 const AdminService = require('../services/AdminService');
+const ErrorService = require('../services/utils/ErrorService');
 
 const usersDataFile = fs.readFileSync(path.resolve(__dirname, '../data/users-data.json'));
 let usersData = JSON.parse(usersDataFile);
@@ -24,11 +25,13 @@ router.get('/users', (req, res) => {
 });
 
 router.post('/change-user-withdrawal-limit', (req, res) => {
-  AdminService.changeUserWithdrawalLimit(ServerAuth.getServerSystemAccessToken(), req.body?.identifier, req.body?.withdrawalLimitAmount)
+  const adminAccessToken = req.headers?.authorization?.split(' ')[1];
+
+  AdminService.changeUserWithdrawalLimit(adminAccessToken, req.body?.identifier, req.body?.withdrawalLimitAmount)
     .then(changeLimitRes => {
       usersData = updateUsersData(req.body || {});
       res.status(200);
-      res.send(JSON.stringify({identifier: req.body?.identifier, newWithdrawalLimit: req.body?.withdrawalLimitAmount}));
+      res.send(JSON.stringify(changeLimitRes));
     })
     .catch(err => {
       ErrorService.sendErrorResponse(err, res);
