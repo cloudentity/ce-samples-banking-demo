@@ -189,7 +189,7 @@ export default function AdminUsersList({
   const [dense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [changeLimitDialogOpen, setChangeLimitDialogOpen] = useState(false);
-  const [changeLimitSuccessData, setChangeLimitSuccessData] = useState(false);
+  const [changeLimitSuccessData, setChangeLimitSuccessData] = useState(null);
   const [changeLimitApiError, setChangeLimitApiError] = useState('');
   const [currentUserActionData, setCurrentUserActionData] = useState({});
   const [refreshList, initRefreshList] = useState(false);
