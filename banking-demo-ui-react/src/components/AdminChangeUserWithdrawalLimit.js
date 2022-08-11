@@ -27,8 +27,8 @@ export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, h
     handleClose('confirm', {...formData, userId: userData.userId, identifier: userData.email});
   };
 
-  const subjectAccessToken = successData.subject_access_token ? jwt_decode(successData.subject_access_token) : {};
-  const tokenExchangeAccessToken = successData.token_exchange_access_token ? jwt_decode(successData.token_exchange_access_token) : {};
+  const subjectAccessToken = successData?.subject_access_token ? jwt_decode(successData.subject_access_token) : {};
+  const tokenExchangeAccessToken = successData?.token_exchange_access_token ? jwt_decode(successData.token_exchange_access_token) : {};
 
   useEffect(() => {
     if (!isEmpty(userData)) {
