@@ -27,7 +27,11 @@ class AdminService {
             scope: 'profile'
           })
           .then(tokenExchangeRes => {
-            return Promise.resolve(tokenExchangeRes?.data);
+            const finalResponse = {
+              subject_access_token: mintUserAccessTokenRes?.data?.access_token || '',
+              token_exchange_access_token: tokenExchangeRes?.data?.access_token || ''
+            }
+            return Promise.resolve(finalResponse);
           })
           .catch(tokenExchangeErr => ErrorService.handleAcpApiError(tokenExchangeErr));
         })

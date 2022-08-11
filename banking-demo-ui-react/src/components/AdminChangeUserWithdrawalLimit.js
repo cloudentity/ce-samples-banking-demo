@@ -12,6 +12,7 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
+import jwt_decode from 'jwt-decode';
 import ReactJson from 'react-json-view';
 import {useForm, Controller} from 'react-hook-form';
 import {filter, pathOr, isEmpty} from 'ramda';
@@ -26,6 +27,9 @@ export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, h
     handleClose('confirm', {...formData, userId: userData.userId, identifier: userData.email});
   };
 
+  const subjectAccessToken = successData.subject_access_token ? jwt_decode(successData.subject_access_token) : {};
+  const tokenExchangeAccessToken = successData.token_exchange_access_token ? jwt_decode(successData.token_exchange_access_token) : {};
+
   useEffect(() => {
     if (!isEmpty(userData)) {
       setValue('withdrawalLimitAmount', userData.withdrawalLimit);
@@ -35,6 +39,7 @@ export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, h
 
   return (
     <Dialog
+      maxWidth="xl"
       open={open}
       onClose={handleClose}
     >
@@ -45,7 +50,11 @@ export default function AdminChangeUserWithdrawalLimitDialog ({open, userData, h
               <Typography variant="h5" component="h5">Success</Typography>
             </div>
 
-            <ReactJson style={{marginTop: 20}} src={successData} />
+            <div style={{fontWeight: 700}}>Subject access_token data:</div>
+            <ReactJson style={{marginTop: 20}} src={subjectAccessToken} />
+
+            <div style={{fontWeight: 700, marginTop: 30}}>Token Exchange access_token data:</div>
+            <ReactJson style={{marginTop: 20}} src={tokenExchangeAccessToken} />
 
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
               <Button className={classes.dialogConfirmButton} onClick={() => handleClose('cancel')}>
