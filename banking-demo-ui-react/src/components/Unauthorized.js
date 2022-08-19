@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import PageContent from './common/PageContent';
 import PageToolbar from './common/PageToolbar';
 
+import jwt_decode from 'jwt-decode';
+import authConfig from '../authConfig';
+
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     height: 'calc(100vh - 64px)',
@@ -37,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Unauthorized = ({className, auth, handleLogin, redirectPath}) => {
   const classes = useStyles();
+
+  const idToken = window.localStorage.getItem(authConfig.idTokenName);
+  const idTokenData = idToken ? jwt_decode(idToken) : {};
+
+  const role = idTokenData.role || 'user';
+  const isAdmin = role === 'admin';
 
   const queryParams = Object.fromEntries((new URLSearchParams(window.location.search)).entries());
 
@@ -76,7 +85,7 @@ const Unauthorized = ({className, auth, handleLogin, redirectPath}) => {
             </Card>
           </div>
         )}
-        {auth && !redirectPath && <Navigate to={'/accounts'} />}
+        {auth && !redirectPath && <Navigate to={isAdmin ? '/admin' : '/accounts'} />}
         {auth && redirectPath && <Navigate to={redirectPath} state={parseState(queryParams.state)} />}
       </PageContent>
     </div>

@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import { Navigate } from 'react-router-dom';
+import AdminDashboard from './AdminDashboard';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
 import PageContent from './common/PageContent';
@@ -15,7 +16,10 @@ const Authorized = ({auth, viewId, handleLogout}) => {
   const idToken = window.localStorage.getItem(authConfig.idTokenName);
   const idTokenData = idToken ? jwt_decode(idToken) : {};
 
-  const [currentTab, setCurrentTab] = useState('accounts');
+  const role = idTokenData.role || 'user';
+  const isAdmin = role === 'admin';
+
+  const [currentTab, setCurrentTab] = useState(isAdmin ? 'admin' : 'accounts');
 
   const handleTabChange = (id) => {
     setCurrentTab(id);
@@ -36,7 +40,8 @@ const Authorized = ({auth, viewId, handleLogout}) => {
             <div style={{ position: 'relative' }}>
               <PageToolbar
                 mode="main"
-                tab={viewId === 'transfer' ? 'accounts' : viewId}
+                role={role}
+                tab={isAdmin ? viewId : (viewId === 'transfer' ? 'accounts' : viewId)}
                 authorizationServerURL={'authorizationServerURL'}
                 authorizationServerId={'authorizationServerId'}
                 tenantId={'tenantId'}
@@ -44,7 +49,8 @@ const Authorized = ({auth, viewId, handleLogout}) => {
                 handleLogout={handleLogout}
               />
               <PageContent>
-                {(viewId === 'accounts' || viewId === 'transfer') && <Dashboard banks={banks} viewId={viewId} />}
+                {!isAdmin && (viewId === 'accounts' || viewId === 'transfer') && <Dashboard banks={banks} viewId={viewId} />}
+                {isAdmin && viewId === 'admin' && <AdminDashboard />}
                 {viewId === 'profile' && <Profile />}
               </PageContent>
             </div>

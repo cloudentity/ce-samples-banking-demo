@@ -25,13 +25,35 @@ npm install
 npm start
 ```
 
-By default, the app runs at http://localhost:5002. This can be changed by opening `src/index.js` and changing the line below:
+**To generate the JWKS public/private keys, and get the public key:**
 
-```js
-const port = 5002;
+Generate the JWKS public/private keys (this will create a git-ignored file called `keys.json` in the `banking-demo-services-nodejs` directory)
+
+Do this once; re-run the command only if you want a fresh set of keys, as it will overwrite the current ones.
+
+```bash
+npm run generate-keys
 ```
 
-Note: It's not necessary to stop and restart the server after making changes. Because the app runs with `nodemon`, changes you make to the code while the app is running will cause the server to refresh.
+Get the public JWKS data to add to your ACP trusted OAuth client settings
+
+```bash
+curl http://localhost:5002/api/jwks
+```
+
+**To configure the environment**
+
+Open the `.env` file in the `banking-demo-services-nodejs` directory, and edit the environment variables with the workspace and ACP clients you're using.
+
+You can leave `ACP_PORT` blank if you're using ACP SaaS.
+
+By default, the app runs at http://localhost:5002. This can be changed by adding a `PORT` variable to the `.env` file, like the example below:
+
+```
+PORT="9002"
+```
+
+Note: Changes to the `.env` file require the server to be stopped and restarted to pick up, but otherwise, it's not necessary to stop and restart the server after making code changes. Because the app runs with `nodemon`, changes you make to the code while the app is running will cause the server to refresh.
 
 By default, REST endpoints have the prefix `/api`. You can change this by opening `src/index.js` and changing the line below to your desired prefix. Change it to an empty string to serve all endpoints without a prefix.
 

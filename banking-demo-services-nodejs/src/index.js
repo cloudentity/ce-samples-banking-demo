@@ -1,47 +1,42 @@
 const express = require('express');
-const axios = require('axios');
-const qs = require('qs');
-const jwt_decode = require('jwt-decode');
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
+const cors = require('cors');
 const morgan = require('morgan');
+// const axios = require('axios');
+// const qs = require('qs');
+// const jwt_decode = require('jwt-decode');
+// const bodyParser = require('body-parser');
+// const https = require('https');
+
+require('dotenv').config();
+const ServerAuth = require('./services/utils/ServerAuth');
+const accountsRoute = require('./routes/Accounts');
+const adminRoute = require('./routes/Admin');
+const keyStoreRoute = require('./routes/KeyStore');
+const tokenRoute = require('./routes/Token');
 
 const app = express();
-const port = 5002;
-const apiPrefix = '/api';
-require('dotenv').config();
+app.use(express.json());
 
+const port = process.env.PORT || 5002;
+
+const apiPrefix = '/api';
+
+// Set access tokens when server starts
+ServerAuth.setServerAdminAccessToken();
+ServerAuth.setServerSystemAccessToken();
+
+// Refresh access token about 3 min before it expires
+const checkServerAuth = setInterval(() => {
+  ServerAuth.checkServerAuth();
+}, 60000);
+
+app.use(cors());
 app.use(morgan('combined'));
 
-const accountsDataFile = fs.readFileSync(path.resolve(__dirname, 'data/accounts-data.json'));
-const accountsData = JSON.parse(accountsDataFile);
-
-const balancesDataFile = fs.readFileSync(path.resolve(__dirname, 'data/balances-data.json'));
-const balancesData = JSON.parse(balancesDataFile);
-
-const transactionsDataFile = fs.readFileSync(path.resolve(__dirname, 'data/transactions-data.json'));
-const transactionsData = JSON.parse(transactionsDataFile);
-
-// TODO: protect API endpoints with ACP
-
-app.get(apiPrefix + '/accounts', (req, res) => {
-  res.send(accountsData);
-});
-
-app.get(apiPrefix + '/balances', (req, res) => {
-  res.send(balancesData);
-});
-
-app.get(apiPrefix + '/transactions', (req, res) => {
-  res.send(transactionsData);
-});
-
-app.post(apiPrefix + '/transfer', (req, res) => {
-  res.send('null');
-  res.status(201).end();
-});
+app.use(apiPrefix + '/accounts', accountsRoute);
+app.use(apiPrefix + '/admin', adminRoute);
+app.use(apiPrefix + '/jwks', keyStoreRoute);
+app.use(apiPrefix + '/token', tokenRoute);
 
 app.get('/', (req, res) => {
   res.send('Service is alive');
