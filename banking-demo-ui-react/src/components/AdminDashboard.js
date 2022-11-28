@@ -10,6 +10,9 @@ import TransferMoney from './TransferMoney';
 // import {applyFiltering} from './analytics.utils';
 // import {path, pick} from 'ramda';
 
+import jwt_decode from 'jwt-decode';
+import authConfig from '../authConfig';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
@@ -42,9 +45,20 @@ export default function AdminDashboard () {
     retry: false
   });
 
+  const defaultAdminScopes = {
+    scopes: authConfig.defaultAdminScopes
+  }
+
+  const {isLoading: checkAdminScopesProgress, data: scopesCheckRes} = useQuery('checkAdminScopes', () => api.verifyAdminScopes(defaultAdminScopes), {
+    refetchOnWindowFocus: false,
+    retry: false
+  });
+
   const users = usersRes || [];
 
-  const isLoading = fetchUsersProgress;
+  const adminScopes = scopesCheckRes ? jwt_decode(scopesCheckRes.access_token) : {};
+
+  const isLoading = fetchUsersProgress || checkAdminScopesProgress;
 
   if (isLoading) {
     return <Progress/>;
@@ -68,6 +82,7 @@ export default function AdminDashboard () {
       <Grid item xs={10} style={{background: '#FCFCFF', padding: '32px 32px 16px 32px'}}>
         <AdminUsersList
           data={users}
+          adminScopes={adminScopes}
           selectedUser={selectedUser}
           setSelectedUser={u => setSelectedUser(u)}
           refreshData={refreshList}

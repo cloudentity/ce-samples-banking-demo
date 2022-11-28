@@ -6,6 +6,24 @@ const ErrorService = require('./utils/ErrorService');
 
 class AdminService {
 
+  verifyAdminScopes (adminToken, scopes) {
+
+    return TokenService.generateToken()
+      .then(jwt => {
+        return AcpApiService.token({
+          grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
+          client_id: process.env.USER_TOKEN_MINTING_OAUTH_CLIENT_ID,
+          client_secret: process.env.USER_TOKEN_MINTING_OAUTH_CLIENT_SECRET,
+          subject_token: adminToken,
+          scope: scopes?.join(' ') || ''
+        })
+        .then(tokenExchangeRes => {
+          return Promise.resolve({ access_token: tokenExchangeRes?.data?.access_token || '' });
+        })
+        .catch(tokenExchangeErr => ErrorService.handleAcpApiError(tokenExchangeErr));
+      });
+  }
+
   changeUserWithdrawalLimit (adminToken, userId, data) {
 
     return TokenService.generateToken(userId)
@@ -36,7 +54,7 @@ class AdminService {
           .catch(tokenExchangeErr => ErrorService.handleAcpApiError(tokenExchangeErr));
         })
         .catch(mintUserAccessTokenErr => ErrorService.handleAcpApiError(mintUserAccessTokenErr));
-      })
+      });
   }
 }
 

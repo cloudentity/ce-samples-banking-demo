@@ -17,7 +17,7 @@ import AdminChangeUserWithdrawalLimitDialog from './AdminChangeUserWithdrawalLim
 
 // import {stringToHex} from './analytics.utils';
 import { api } from '../api/api';
-import { omit, pickBy } from 'ramda';
+import { includes, omit, pickBy, reject } from 'ramda';
 
 export const mapUsersToData = user => createData (
   user.userId,
@@ -75,15 +75,17 @@ const headCells = [
 ];
 
 function EnhancedTableHead (props) {
-  const {classes, order, orderBy, onRequestSort} = props;
+  const {classes, order, orderBy, onRequestSort, toOmit} = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
+  const finalHeadCells = reject(c => includes(c.id, toOmit), headCells);
+
   return (
     <TableHead>
       <TableRow className={'analytics-table-head'}>
-        {headCells.map((headCell) => (
+        {finalHeadCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={'left'}
@@ -176,6 +178,7 @@ const useStyles = makeStyles((theme) =>
 
 export default function AdminUsersList({
   data,
+  adminScopes,
   selectedUser,
   setSelectedUser,
   refreshData,
@@ -193,6 +196,9 @@ export default function AdminUsersList({
   const [changeLimitApiError, setChangeLimitApiError] = useState('');
   const [currentUserActionData, setCurrentUserActionData] = useState({});
   const [refreshList, initRefreshList] = useState(false);
+
+  const canReadUserWithdrawalLimit = includes('withdrawal.read', adminScopes?.scp || []);
+  const canUpdateUserWithdrawalLimit = includes('withdrawal.update', adminScopes?.scp || []);
 
   const handleOpenChangeLimitDialog = (userData) => {
     setCurrentUserActionData(userData);
@@ -289,6 +295,7 @@ export default function AdminUsersList({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={data.length}
+              toOmit={canReadUserWithdrawalLimit ? [] : ['withdrawalLimit']}
             />
             <TableBody>
               {stableSort(data, getComparator(order, orderBy))
@@ -313,18 +320,22 @@ export default function AdminUsersList({
                       <TableCell align="left">{row.email}</TableCell>
                       <TableCell align="left">{row.firstName}</TableCell>
                       <TableCell align="left">{row.lastName}</TableCell>
-                      <TableCell align="left">
-                        <div style={{display: 'flex'}}>
-                          <div style={{marginRight: 30, marginTop: 8}}>
-                            {`$${row.withdrawalLimit}`}
+                      {canReadUserWithdrawalLimit && (
+                        <TableCell align="left">
+                          <div style={{display: 'flex'}}>
+                            <div style={{marginRight: 30, marginTop: 8}}>
+                              {`$${row.withdrawalLimit}`}
+                            </div>
+                            {canUpdateUserWithdrawalLimit && (
+                              <div>
+                                <Button className={classes.changeLimitButton} onClick={() => handleOpenChangeLimitDialog(row)}>
+                                  Change limit
+                                </Button>
+                              </div>
+                            )}
                           </div>
-                          <div>
-                            <Button className={classes.changeLimitButton} onClick={() => handleOpenChangeLimitDialog(row)}>
-                              Change limit
-                            </Button>
-                          </div>
-                        </div>
-                      </TableCell>
+                        </TableCell>
+                      )}
                       <TableCell align="left">{row.accounts?.length}</TableCell>
                     </TableRow>
                   );

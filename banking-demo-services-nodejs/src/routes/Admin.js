@@ -24,6 +24,19 @@ router.get('/users', (req, res) => {
   res.send(usersData);
 });
 
+router.post('/verify-scopes', (req, res) => {
+  const adminAccessToken = req.headers?.authorization?.split(' ')[1];
+
+  AdminService.verifyAdminScopes(adminAccessToken, req.body?.scopes)
+    .then(verifyScopesRes => {
+      res.status(200);
+      res.send(JSON.stringify(verifyScopesRes));
+    })
+    .catch(err => {
+      ErrorService.sendErrorResponse(err, res);
+    });
+});
+
 router.post('/change-user-withdrawal-limit', (req, res) => {
   const adminAccessToken = req.headers?.authorization?.split(' ')[1];
 

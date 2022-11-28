@@ -10,7 +10,9 @@ const authConfig = {
      accessTokenName: 'banking_demo_access_token', // optional; defaults to '{tenantId}_{authorizationServerId}_access_token'
      idTokenName: 'banking_demo_id_token', // optional; defaults to '{tenantId}_{authorizationServerId}_id_token',
      responseType: ['code'],
-     letClientSetAccessToken: true
+     letClientSetAccessToken: true,
+
+     defaultAdminScopes: ['withdrawal.read', 'withdrawal.update']
  };
 
  export default authConfig;

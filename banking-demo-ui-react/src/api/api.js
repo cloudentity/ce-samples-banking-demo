@@ -2,6 +2,7 @@ import {base, baseWithCustomBaseUrl} from './api-base';
 
 export const api = {
   // Admin APIs
+  verifyAdminScopes: body => base.post({url: '/admin/verify-scopes', body}),
   adminFetchUsers: () => base.get({url: '/admin/users'}),
   adminChangeWithdrawalLimit: body => base.post({url: '/admin/change-user-withdrawal-limit', body}),
 
