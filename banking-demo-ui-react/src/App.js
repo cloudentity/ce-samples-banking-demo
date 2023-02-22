@@ -22,6 +22,16 @@ function App() {
     cloudentity.authorize();
   };
 
+  function tokenExchange (options) {
+    const accessToken = window.localStorage.getItem(authConfig.accessTokenName);
+
+    return cloudentity.tokenExchange({
+      subjectToken: accessToken,
+      customFields: options.customFields,
+      setAccessToken: options.setAccessToken
+    });
+  }
+
   function clearAuth () {
     cloudentity.revokeAuth()
       .then(() => {
@@ -44,7 +54,7 @@ function App() {
                 <Route path="accounts" element={<Authorized auth={authenticated} viewId={'accounts'} handleLogout={clearAuth} />} />
                 <Route path="transfer" element={<Authorized auth={authenticated} viewId={'transfer'} handleLogout={clearAuth} />} />
                 <Route path="transfer-callback" element={<Unauthorized className="App" auth={authenticated} handleLogin={authorize} redirectPath='/transfer' />} />
-                <Route path="profile" element={<Authorized auth={authenticated} viewId={'profile'} handleLogout={clearAuth} />} />
+                <Route path="profile" element={<Authorized auth={authenticated} viewId={'profile'} handleLogout={clearAuth} handleTokenExchange={tokenExchange} />} />
               </Routes>
             </BrowserRouter>
           </div>

@@ -12,7 +12,7 @@ import authConfig from '../authConfig';
 import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
-const Authorized = ({auth, viewId, handleLogout}) => {
+const Authorized = ({auth, viewId, handleLogout, handleTokenExchange}) => {
   const idToken = window.localStorage.getItem(authConfig.idTokenName);
   const idTokenData = idToken ? jwt_decode(idToken) : {};
 
@@ -51,7 +51,7 @@ const Authorized = ({auth, viewId, handleLogout}) => {
               <PageContent>
                 {!isAdmin && (viewId === 'accounts' || viewId === 'transfer') && <Dashboard banks={banks} viewId={viewId} />}
                 {isAdmin && viewId === 'admin' && <AdminDashboard />}
-                {viewId === 'profile' && <Profile />}
+                {viewId === 'profile' && <Profile handleTokenExchange={handleTokenExchange} />}
               </PageContent>
             </div>
           )}

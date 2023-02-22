@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5002",
   "dependencies": {
-    "@cloudentity/auth": "2.0.2-beta.0",
+    "@cloudentity/auth": "2.0.5-beta.1",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.16.2",
