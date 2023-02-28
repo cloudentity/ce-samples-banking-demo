@@ -60,14 +60,18 @@ const Profile = ({auth, handleLogout, handleTokenExchange}) => {
   const accessTokenData = accessToken ? jwt_decode(accessToken) : {};
 
   const submitOrgSwitch = (formData) => {
-    const tokenExchangeCustomFields = '&scope=' + encodeURIComponent(formData.scopes)
-      + '&org_id=' + encodeURIComponent(formData.switchOrg);
+    const tokenExchangeCustomFields = {
+      scope: formData.scopes,
+      // scope: formData.scopes.split(' '), -- for value of 'scope' param only, array of strings OK to pass to tokenExchange method
+      org_id: formData.switchOrg
+    }
 
     handleTokenExchange({customFields: tokenExchangeCustomFields, setAccessToken: true})
       .then(() => {
         window.location.reload();
       })
-      .catch(() => {
+      .catch(err => {
+        console.log('Token exchange error:', err);
         window.alert('The authorization server returned an error. Check the developer tools for details.');
       });
   };
