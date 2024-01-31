@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 // Uncomment and change the line below to point to your own logo image
-// import logoImage from '../../assets/logo-example.svg';
+import logoImage from '../../assets/logo-example.svg';
 
 export const subHeaderHeight = 116;
 
@@ -87,12 +87,9 @@ export default function PageToolbar({
       className={classes.appBar}
     >
       <Toolbar className={classes.toolBar}>
-        {/* <img alt="logo image" src={logoImage} /> */}
+        <img alt="logo image" src={logoImage} />
         {/* To use your own logo, uncomment the line above (after editing the 'logoImage' import declaration to point to your own image)... */}
         {/* ...and remove the div block directly below */}
-        <div className={classes.textLogo}>
-          <Typography variant="h5" component="h1">1st Demo Bank</Typography>
-        </div>
         <div style={{ flex: 1 }} />
 
         {mode === 'dialog' && children}

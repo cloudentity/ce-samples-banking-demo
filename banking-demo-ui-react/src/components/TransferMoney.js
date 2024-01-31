@@ -73,7 +73,7 @@ const TransferMoney = ({accountData, classes}) => {
   const [transferFromAcct, setTransferFromAcct] = useState(state?.transferFromAcct || 'none');
   const [transferToAcct, setTransferToAcct] = useState(state?.transferToAcct || 'none');
 
-  const activeAccessToken = window.localStorage.getItem(`${authConfig.accessTokenName}_transfer.${state?.transferAmount}`);
+  const activeAccessToken = window.localStorage.getItem(`${authConfig.accessTokenName}_transferAmount.${state?.transferAmount}`);
   const activeAccessTokenData = activeAccessToken ? jwt_decode(activeAccessToken) : {};
 
   const handleChangeTransferDialogState = (action, data) => {
@@ -81,19 +81,19 @@ const TransferMoney = ({accountData, classes}) => {
       setTransferDialogOpen(false);
       setTransferDialogError('');
       if (state?.transferAmount) {
-        window.localStorage.removeItem(`${authConfig.accessTokenName}_transfer.${state?.transferAmount}`);
+        window.localStorage.removeItem(`${authConfig.accessTokenName}_transferAmount.${state?.transferAmount}`);
       }
     }
     if (action === 'confirm') {
       setTransferDialogError('');
-      const transferAccessTokenName = `${authConfig.accessTokenName}_transfer.${data.transferAmount}`;
+      const transferAccessTokenName = `${authConfig.accessTokenName}_transferAmount.${data.transferAmount}`;
       const transferAccessToken = window.localStorage.getItem(transferAccessTokenName);
 
       const transferAuthConfig = {
         ...authConfig,
         ...{
           accessTokenName: transferAccessTokenName,
-          scopes: [`transfer.${data.transferAmount}`],
+          scopes: [`transferAmount.${data.transferAmount}`],
           redirectUri: 'http://localhost:3000/transfer-callback',
         }
       };

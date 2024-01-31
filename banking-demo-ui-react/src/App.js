@@ -23,12 +23,17 @@ function App() {
   };
 
   function clearAuth () {
-    cloudentity.revokeAuth()
+      cloudentity.revokeAuth()
       .then(() => {
         window.location.reload();
+          window.location.assign("https://lovatt-org.us.authz.cloudentity.io/lovatt-org/default/oidc/logout");
+         // window.location.assign("https://lovatt-org.us.authz.cloudentity.io/lovatt-org/default/oidc/logout?post_logout_redirect_uri=localhost%3A3000");
       })
       .catch(() => {
         window.location.reload();
+          window.location.assign("https://lovatt-org.us.authz.cloudentity.io/lovatt-org/default/oidc/logout");
+          //window.location.assign("https://lovatt-org.us.authz.cloudentity.io/lovatt-org/default/oidc/logout?post_logout_redirect_uri=localhost%3A3000");
+
       });
   };
 

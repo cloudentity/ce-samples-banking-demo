@@ -9,6 +9,6 @@ export const api = {
   fetchAccounts: () => base.get({url: '/accounts'}),
   fetchTransactions: () => base.get({url: '/accounts/transactions'}),
   fetchBalances: () => base.get({url: '/accounts/balances'}),
-  transferMoney: (body, customTokenName) => base.post({url: '/transfer', body, customTokenName}),
+  transferMoney: (body, customTokenName) => base.post({url: '/accounts/transfer', body, customTokenName}),
   userinfo: (authorizationServerURL, tenantId, authorizationServerId) => baseWithCustomBaseUrl('/', authorizationServerURL).get({url: `/${tenantId}/${authorizationServerId}/userinfo`})
 };
